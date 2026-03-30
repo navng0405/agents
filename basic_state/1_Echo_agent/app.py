@@ -1,25 +1,38 @@
+import operator
 from langchain_ollama import ChatOllama
-from langgraph.graph import StateGraph, END
-from typing import TypedDict
+from langgraph.graph import StateGraph, START, END
+from typing import Annotated, TypedDict
 
+#Define the "State" (The memory of the agent)
+class State(TypedDict):
+    # Annotated with operator.add allows messages to append rather then overwrite
+    user_input: str
+    agent_output: str
+
+#2. Initialize the LLM (The brain of the agent)
 llm =ChatOllama(model="llama3.1:8b")
 
-class State(TypedDict):
-    messages: list
-    response: str
+#3. Define the Node (The function that processes the state)
+def echo_node(state: State):
+    # In a real agent, you would do: response = llm.invoke(state["user_input"])
+    # For a pure Echo , we just format the strin.
+    print("---LOG : Node is procesing---")
+    return {"agent_output": f"Echo: {state['user_input']}"}
 
-def generate(state: State) -> str:
-    messages = state["messages"]
-    response = llm.invoke(messages)
-    return {"response": response.content}
+# 4.Build the graph (The structure of the agent)
+workflow = StateGraph(State)
 
-graph = StateGraph(State)
-graph.add_node("generate", generate)
-graph.set_entry_point("generate")
-graph.add_edge("generate", END)
+#Add the node to the graph
+workflow.add_node("echo", echo_node)
 
-app = graph.compile()
+#Define the entry point and exit point
+workflow.add_edge(START, "echo")
+workflow.add_edge("echo", END)
 
-initial_state = {"messages": [("user", "Why learning agentic AI (langgrapg) is very important for software enginner in 2026 and what is the future for siftware engineers")], "response": ""}
-result= app.invoke(initial_state)
-print(result["response"])
+# 5. Compile and Run
+app = workflow.compile()
+
+#Test the agent
+inputs = {"user_input": "Hello, how are you?"}
+result = app.invoke(inputs)
+print(result["agent_output"])
