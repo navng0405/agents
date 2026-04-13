@@ -71,3 +71,8 @@ if __name__ == "__main__":
     #Test with a query about the weather
     result = app.invoke({"messages": [HumanMessage(content="What's the weather like in London?")]})
     print("Result:", result)
+
+    inputs={"messages": [HumanMessage(content="What's the weather like in Paris?")]}
+    for output in app.stream(inputs):
+        for key, value in output.items():
+            print(f"Output from node '{key}': {value}")

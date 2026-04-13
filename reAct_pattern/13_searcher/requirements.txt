@@ -1,0 +1,6 @@
+langchain-ollama
+langgraph
+langchain
+langchain-community
+duckduckgo-search
+ddgs
