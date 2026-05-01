@@ -1,0 +1,21 @@
+# Orchestration & Agentic Framework
+langgraph
+langchain-core
+langchain-ollama
+
+# Data & Structured Output
+pydantic
+pydantic-settings
+json-repair
+
+# Multimodal & Media Processing
+pillow
+opencv-python
+numpy
+librosa
+soundfile
+openai-whisper
+
+# Utilities
+python-dotenv
+httpx

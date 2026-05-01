@@ -1,0 +1,10 @@
+# Optional local inference dependencies for this example.
+# Install these only if you are changing app.py to run a local model
+# instead of ChatGoogleGenerativeAI.
+#
+# Note: `llama-cpp-python` can fail to build on macOS when Apple
+# Command Line Tools / clang are older than the libc++ headers shipped
+# on the machine. Keep it out of the default install path.
+
+llama-cpp-python
+ollama
